@@ -88,7 +88,6 @@ public class Tictactoe {
 				}
 			else
 				{ // should never reach this. it's if turn is still 1 or 2
-					key.close();
 					throw new IllegalStateException();
 				}
 			Mark winner;
@@ -99,7 +98,6 @@ public class Tictactoe {
 				{
 					displayBoard();
 					System.out.println("Winner is player 1!");
-					key.close();
 					return 1; // end program. we found a winner
 				}
 			else if (winner == player2)
