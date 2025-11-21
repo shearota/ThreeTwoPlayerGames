@@ -104,7 +104,6 @@ public class Tictactoe {
 				{
 					displayBoard();
 					System.out.println("Winner is player 2!");
-					key.close();
 					return 2; // end program. we found a winner
 				}
 			}
@@ -113,13 +112,11 @@ public class Tictactoe {
 			{ // if game is over, and we already said we did not find a winner, then it must be a tie
 				System.out.println("Tie. Game over.");
 				displayBoard();
-				key.close();
 				return 0;
 			}
 			
 		}
 		
-		key.close();
 		return -1;
 	}
 	
