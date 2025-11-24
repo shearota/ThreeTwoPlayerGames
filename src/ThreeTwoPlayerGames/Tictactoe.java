@@ -15,15 +15,15 @@ public class Tictactoe {
 	{
 		if (mark.equals(Mark.X))
 		{
-			return "X ";
+			return "X";
 		}
 		else if (mark.equals(Mark.O))
 		{
-			return "O ";
+			return "O";
 		}
 		else if (mark.equals(Mark.EMPTY))
 		{
-			return "   ";
+			return " ";
 		}
 		else
 		{
@@ -110,8 +110,8 @@ public class Tictactoe {
 			// if the code reaches this line then we did not find a winner yet
 			if (gameover()) // check if game is over
 			{ // if game is over, and we already said we did not find a winner, then it must be a tie
-				System.out.println("Tie. Game over.");
 				displayBoard();
+				System.out.println("Tie. Game over.");
 				return 0;
 			}
 			
@@ -132,12 +132,12 @@ public class Tictactoe {
 	 */
 	public void displayBoard()
 	{
-		System.out.println("     1  2  3");
+		System.out.println("   1 2 3");
 		for (int row = 1; row <= 3; row++) // printing the rows
 		{ 
 			if (row == 2 || row == 3)
 			{
-				System.out.println("    ─┼─┼─");
+				System.out.println("   ─┼─┼─");
 			}
 			for (int col = 1; col <= 3; col++)
 			{
