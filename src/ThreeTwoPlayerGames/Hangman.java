@@ -12,123 +12,85 @@ public class Hangman {
 
 		int playerOne = 1;
 		int playerTwo = 2;
-        int playerOneWins = 0;
-        int playerTwoWins = 0;
 
-        boolean playing = true;
+        System.out.println("\nStarting Hangman Game.");
+        
+        System.out.print("Who will write the sentence? Enter 1 for player 1 and 2 for player 2: ");
+        
+        int writer = 0;
+        
+        while (writer != playerOne && writer != playerTwo) {
 
-        while (playing) {
-
-            System.out.println("\n1. Play Hangman");
-            System.out.println("2. Show Scores");
-            System.out.println("3. Quit");
-            System.out.print("Enter your choice: ");
-
-            if (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter 1, 2, or 3.");
+            if (scanner.hasNextInt()) {
+                writer = scanner.nextInt();
+                scanner.nextLine(); 
+            } else {
                 scanner.nextLine();
+            }
+
+            if (writer != playerOne && writer != playerTwo) {
+                System.out.print("Enter a valid choice (1 or 2): ");
+            }
+        }
+
+		int guesser = writer == playerOne ? playerTwo : playerOne;
+        System.out.println("Player " + writer + ", type your sentence:");
+
+        String sentence = scanner.nextLine().toLowerCase();
+
+        for (int i = 0; i < 40; i++) System.out.println(); 
+
+        char[] guessedLetters = new char[26];
+        int guessedCount = 0;
+        int misses = 0;
+        final int MAX_MISSES = 6;
+
+        while (misses < MAX_MISSES && !checkWinner(sentence, guessedLetters, guessedCount)) {
+
+            drawScreen(sentence, guessedLetters, guessedCount, misses, MAX_MISSES);
+            System.out.print("Player " + guesser + ", enter a letter guess: ");
+            
+            String input = scanner.nextLine().toLowerCase();
+
+            if (input.length() != 1 || !Character.isLetter(input.charAt(0))) {
+                System.out.println("Invalid input. Guess one letter.");
                 continue;
             }
-            
-            int choice = scanner.nextInt();
-            scanner.nextLine();
 
-            if (choice == 1) {
+            char guess = input.charAt(0);
 
-                System.out.print("Who will write the sentence? Enter 1 for player 1 and 2 for player 2: ");
-                
-                int writer = 0;
-                
-                while (writer != playerOne && writer != playerTwo) {
+            if (alreadyGuessed(guessedLetters, guessedCount, guess)) {
+                System.out.println("You already guessed that!");
+                continue;
+            }
 
-                    if (scanner.hasNextInt()) {
-                        writer = scanner.nextInt();
-                        scanner.nextLine(); 
-                    } else {
-                        scanner.nextLine();
-                    }
+            guessedLetters[guessedCount++] = guess;
 
-                    if (writer != playerOne && writer != playerTwo) {
-                        System.out.print("Enter a valid choice (1 or 2): ");
-                    }
-                }
-
-				int guesser = writer == playerOne ? playerTwo : playerOne;
-                System.out.println("Player " + writer + ", type your sentence:");
-
-                String sentence = scanner.nextLine().toLowerCase();
-
-                for (int i = 0; i < 40; i++) System.out.println(); 
-
-                char[] guessedLetters = new char[26];
-                int guessedCount = 0;
-                int misses = 0;
-                final int MAX_MISSES = 6;
-
-                while (misses < MAX_MISSES && !checkWinner(sentence, guessedLetters, guessedCount)) {
-
-                    drawScreen(sentence, guessedLetters, guessedCount, misses, MAX_MISSES);
-                    System.out.print("Player " + guesser + ", enter a letter guess: ");
-                    
-                    String input = scanner.nextLine().toLowerCase();
-
-                    if (input.length() != 1 || !Character.isLetter(input.charAt(0))) {
-                        System.out.println("Invalid input. Guess one letter.");
-                        continue;
-                    }
-
-                    char guess = input.charAt(0);
-
-                    if (alreadyGuessed(guessedLetters, guessedCount, guess)) {
-                        System.out.println("You already guessed that!");
-                        continue;
-                    }
-
-                    guessedLetters[guessedCount++] = guess;
-
-                    if (sentence.indexOf(guess) == -1) {
-                        misses++;
-                        System.out.println("Wrong guess! Misses: " + misses + "/" + MAX_MISSES);
-                    } else {
-                        System.out.println("Correct guess!");
-                    }
-
-                }
-
-                drawScreen(sentence, guessedLetters, guessedCount, misses, MAX_MISSES);
-
-                // Check for win/loss and update scores
-                if (checkWinner(sentence, guessedLetters, guessedCount)) {
-                    System.out.println("Player " + guesser + " wins! The sentence was: " + sentence);
-                    // FIX 5: Use == for comparing integers, not .equals()
-                    if (guesser == playerOne) playerOneWins++;
-                    else playerTwoWins++;
-                } 
-                else {
-                    System.out.println("The word was not guessed in time. Player " + writer + " wins! The sentence was: " + sentence);
-                    // FIX 6: Use == for comparing integers, not .equals()
-                    if (writer == playerOne) playerOneWins++;
-                    else playerTwoWins++;
-                }
-
-            } else if (choice == 2) {
-
-                System.out.println("\n Current Scores:");
-                System.out.println("Player " + playerOne + ": " + playerOneWins);
-                System.out.println("Player " + playerTwo + ": " + playerTwoWins);
-
-            } else if (choice == 3) {
-
-                System.out.println("Thanks for playing!");
-                playing = false;
-
+            if (sentence.indexOf(guess) == -1) {
+                misses++;
+                System.out.println("Wrong guess! Misses: " + misses + "/" + MAX_MISSES);
             } else {
-
-                System.out.println("Invalid choice. Try again.");
-
+                System.out.println("Correct guess!");
             }
 
         }
+
+        drawScreen(sentence, guessedLetters, guessedCount, misses, MAX_MISSES);
+
+        if (checkWinner(sentence, guessedLetters, guessedCount)) {
+            System.out.println("Player " + guesser + " wins! The sentence was: " + sentence);
+
+            if (guesser == playerOne) ThreeTwoPlayerGames.overallPlayerOneWins++;
+            else ThreeTwoPlayerGames.overallPlayerTwoWins++;
+        } 
+        else {
+            System.out.println("The word was not guessed in time. Player " + writer + " wins! The sentence was: " + sentence);
+
+            if (writer == playerOne) ThreeTwoPlayerGames.overallPlayerOneWins++;
+            else ThreeTwoPlayerGames.overallPlayerTwoWins++;
+        }
+        
+        System.out.println("Hangman game ended. Returning to main menu.");
 
 		return 0; 
 	}
@@ -208,5 +170,4 @@ public class Hangman {
 	        return false;
 
 	    }
-
-	    }  
+}	
