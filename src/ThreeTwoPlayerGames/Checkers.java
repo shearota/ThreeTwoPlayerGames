@@ -14,6 +14,8 @@ public class Checkers {
 
     public int startGame()
     {
+        scoreX = 0;
+        scoreO = 0;
     	initializeBoard();
         printBoard();
 
