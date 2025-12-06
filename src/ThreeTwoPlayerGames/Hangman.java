@@ -9,8 +9,9 @@ public class Hangman {
 	public int startGame()
 	{
 		scanner = new Scanner(System.in);
+
 		int playerOne = 1;
-		int playerTwo 2;
+		int playerTwo = 2;
         int playerOneWins = 0;
         int playerTwoWins = 0;
 
@@ -19,29 +20,37 @@ public class Hangman {
         while (playing) {
 
             System.out.println("\n1. Play Hangman");
-
             System.out.println("2. Show Scores");
-
             System.out.println("3. Quit");
-
             System.out.print("Enter your choice: ");
 
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter 1, 2, or 3.");
+                scanner.nextLine();
+                continue;
+            }
+            
             int choice = scanner.nextInt();
-
-            scanner.nextLine(); 
+            scanner.nextLine();
 
             if (choice == 1) {
 
-                System.out.print("Who will write the sentence? Enter 1 for player 1 and 2 for player 2");
+                System.out.print("Who will write the sentence? Enter 1 for player 1 and 2 for player 2: ");
+                
+                int writer = 0;
+                
+                while (writer != playerOne && writer != playerTwo) {
 
-                int writer = scanner.nextLine();
+                    if (scanner.hasNextInt()) {
+                        writer = scanner.nextInt();
+                        scanner.nextLine(); 
+                    } else {
+                        scanner.nextLine();
+                    }
 
-                while (!writer == 1) && !writer == 2) {
-
-                    System.out.print("Enter a valid choice: ");
-
-                    writer = scanner.nextLine();
-
+                    if (writer != playerOne && writer != playerTwo) {
+                        System.out.print("Enter a valid choice (1 or 2): ");
+                    }
                 }
 
 				int guesser = writer == playerOne ? playerTwo : playerOne;
@@ -49,92 +58,68 @@ public class Hangman {
 
                 String sentence = scanner.nextLine().toLowerCase();
 
-                for (int i = 0; i < 40; i++) System.out.println();
+                for (int i = 0; i < 40; i++) System.out.println(); 
 
                 char[] guessedLetters = new char[26];
-
                 int guessedCount = 0;
-
                 int misses = 0;
-
                 final int MAX_MISSES = 6;
 
                 while (misses < MAX_MISSES && !checkWinner(sentence, guessedLetters, guessedCount)) {
 
                     drawScreen(sentence, guessedLetters, guessedCount, misses, MAX_MISSES);
-
-                    System.out.print("Enter a letter guess: ");
-
+                    System.out.print("Player " + guesser + ", enter a letter guess: ");
+                    
                     String input = scanner.nextLine().toLowerCase();
 
                     if (input.length() != 1 || !Character.isLetter(input.charAt(0))) {
-
                         System.out.println("Invalid input. Guess one letter.");
-
                         continue;
-
                     }
 
                     char guess = input.charAt(0);
 
                     if (alreadyGuessed(guessedLetters, guessedCount, guess)) {
-
                         System.out.println("You already guessed that!");
-
                         continue;
-
                     }
 
                     guessedLetters[guessedCount++] = guess;
 
                     if (sentence.indexOf(guess) == -1) {
-
                         misses++;
-
                         System.out.println("Wrong guess! Misses: " + misses + "/" + MAX_MISSES);
-
                     } else {
-
                         System.out.println("Correct guess!");
-
                     }
 
                 }
 
                 drawScreen(sentence, guessedLetters, guessedCount, misses, MAX_MISSES);
 
+                // Check for win/loss and update scores
                 if (checkWinner(sentence, guessedLetters, guessedCount)) {
-
                     System.out.println("Player " + guesser + " wins! The sentence was: " + sentence);
-
-                    if (guesser.equals(playerOne)) playerOneWins++;
-
+                    // FIX 5: Use == for comparing integers, not .equals()
+                    if (guesser == playerOne) playerOneWins++;
                     else playerTwoWins++;
-
                 } 
-
                 else {
-
-                    System.out.println("Player " + writer + " wins! The sentence was: " + sentence);
-
-                    if (writer.equals(playerOne)) playerOneWins++;
-
+                    System.out.println("The word was not guessed in time. Player " + writer + " wins! The sentence was: " + sentence);
+                    // FIX 6: Use == for comparing integers, not .equals()
+                    if (writer == playerOne) playerOneWins++;
                     else playerTwoWins++;
-
                 }
 
             } else if (choice == 2) {
 
                 System.out.println("\n Current Scores:");
-
                 System.out.println("Player " + playerOne + ": " + playerOneWins);
-
                 System.out.println("Player " + playerTwo + ": " + playerTwoWins);
 
             } else if (choice == 3) {
 
                 System.out.println("Thanks for playing!");
-
                 playing = false;
 
             } else {
@@ -145,89 +130,83 @@ public class Hangman {
 
         }
 
-		return -1;
+		return 0; 
 	}
 	
-    public static void main(String[] args) {
+	   public static void drawScreen(String sentence, char[] guessed, int guessedCount, int misses, int max) {
 
-        
+	        System.out.println("\nWord:");
 
-    }
+	        for (int i = 0; i < sentence.length(); i++) {
 
-    public static void drawScreen(String sentence, char[] guessed, int guessedCount, int misses, int max) {
+	            char c = sentence.charAt(i);
 
-        System.out.println("\nWord:");
+	            if (c == ' ') {
 
-        for (int i = 0; i < sentence.length(); i++) {
+	                System.out.print(" ");
 
-            char c = sentence.charAt(i);
+	            } else if (isGuessed(guessed, guessedCount, c)) {
 
-            if (c == ' ') {
+	                System.out.print(c);
 
-                System.out.print(" ");
+	            } else {
 
-            } else if (isGuessed(guessed, guessedCount, c)) {
+	                System.out.print("_");
 
-                System.out.print(c);
+	            }
 
-            } else {
+	        }
 
-                System.out.print("_");
+	        System.out.println("\nMisses: " + misses + "/" + max);
 
-            }
+	        System.out.print("Guessed letters: ");
 
-        }
+	        for (int i = 0; i < guessedCount; i++) {
 
-        System.out.println("\nMisses: " + misses + "/" + max);
+	            System.out.print(guessed[i] + " ");
 
-        System.out.print("Guessed letters: ");
+	        }
 
-        for (int i = 0; i < guessedCount; i++) {
+	        System.out.println();
 
-            System.out.print(guessed[i] + " ");
+	    }
 
-        }
+	    public static boolean isGuessed(char[] guessed, int guessedCount, char c) {
 
-        System.out.println();
+	        for (int i = 0; i < guessedCount; i++) {
 
-    }
+	            if (guessed[i] == c) return true;
 
-    public static boolean isGuessed(char[] guessed, int guessedCount, char c) {
+	        }
 
-        for (int i = 0; i < guessedCount; i++) {
+	        return false;
 
-            if (guessed[i] == c) return true;
+	    }
 
-        }
+	    public static boolean checkWinner(String sentence, char[] guessed, int guessedCount) {
 
-        return false;
+	        for (int i = 0; i < sentence.length(); i++) {
 
-    }
+	            char c = sentence.charAt(i);
 
-    public static boolean checkWinner(String sentence, char[] guessed, int guessedCount) {
+	            if (c != ' ' && !isGuessed(guessed, guessedCount, c)) return false;
 
-        for (int i = 0; i < sentence.length(); i++) {
+	        }
 
-            char c = sentence.charAt(i);
+	        return true;
 
-            if (c != ' ' && !isGuessed(guessed, guessedCount, c)) return false;
+	    }
 
-        }
+	    public static boolean alreadyGuessed(char[] guessed, int guessedCount, char guess) {
 
-        return true;
+	        for (int i = 0; i < guessedCount; i++) {
 
-    }
+	            if (guessed[i] == guess) return true;
 
-    public static boolean alreadyGuessed(char[] guessed, int guessedCount, char guess) {
+	        }
 
-        for (int i = 0; i < guessedCount; i++) {
+	        return false;
 
-            if (guessed[i] == guess) return true;
+	    }
 
-        }
-
-        return false;
-
-    }
-
-    }
+	    }  
