@@ -9,16 +9,9 @@ public class Hangman {
 	public int startGame()
 	{
 		scanner = new Scanner(System.in);
-
-        System.out.print("Enter player one name: ");
-
-        String playerOne = scanner.nextLine();
-        System.out.print("Enter player two name: ");
-
-        String playerTwo = scanner.nextLine();
-
+		int playerOne = 1;
+		int playerTwo 2;
         int playerOneWins = 0;
-
         int playerTwoWins = 0;
 
         boolean playing = true;
@@ -39,21 +32,20 @@ public class Hangman {
 
             if (choice == 1) {
 
-                System.out.print("Who will write the sentence? ");
+                System.out.print("Who will write the sentence? Enter 1 for player 1 and 2 for player 2");
 
-                String writer = scanner.nextLine();
+                int writer = scanner.nextLine();
 
-                while (!writer.equals(playerOne) && !writer.equals(playerTwo)) {
+                while (!writer == 1) && !writer == 2) {
 
-                    System.out.print("Enter a valid name: ");
+                    System.out.print("Enter a valid choice: ");
 
                     writer = scanner.nextLine();
 
                 }
 
-                String guesser = writer.equals(playerOne) ? playerTwo : playerOne;
-
-                System.out.println(writer + ", type your sentence:");
+				int guesser = writer == playerOne ? playerTwo : playerOne;
+                System.out.println("Player " + writer + ", type your sentence:");
 
                 String sentence = scanner.nextLine().toLowerCase();
 
@@ -113,7 +105,7 @@ public class Hangman {
 
                 if (checkWinner(sentence, guessedLetters, guessedCount)) {
 
-                    System.out.println(guesser + " wins! The sentence was: " + sentence);
+                    System.out.println("Player " + guesser + " wins! The sentence was: " + sentence);
 
                     if (guesser.equals(playerOne)) playerOneWins++;
 
@@ -123,7 +115,7 @@ public class Hangman {
 
                 else {
 
-                    System.out.println(writer + " wins! The sentence was: " + sentence);
+                    System.out.println("Player " + writer + " wins! The sentence was: " + sentence);
 
                     if (writer.equals(playerOne)) playerOneWins++;
 
@@ -135,9 +127,9 @@ public class Hangman {
 
                 System.out.println("\n Current Scores:");
 
-                System.out.println(playerOne + ": " + playerOneWins);
+                System.out.println("Player " + playerOne + ": " + playerOneWins);
 
-                System.out.println(playerTwo + ": " + playerTwoWins);
+                System.out.println("Player " + playerTwo + ": " + playerTwoWins);
 
             } else if (choice == 3) {
 
