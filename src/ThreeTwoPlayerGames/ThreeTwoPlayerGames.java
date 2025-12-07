@@ -39,7 +39,10 @@ public class ThreeTwoPlayerGames {
 				System.out.println("Exiting... ");
 				flag = false;
 				break;
+			default:
+				System.out.println("Type 1, 2, 3, or 4");
 			}
+			
 				
 		}
 	}
