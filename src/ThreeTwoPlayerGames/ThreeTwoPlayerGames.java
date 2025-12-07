@@ -21,12 +21,19 @@ public class ThreeTwoPlayerGames {
 		        System.out.println("3. Checkers");
 		        System.out.println("4. Quit");
 		        System.out.println("Current score: \nPlayer 1: " + overallPlayerOneWins + "\nPlayer 2: " +overallPlayerTwoWins);
-		        String lineInput = key.nextLine();
-		        if (lineInput.isEmpty()) continue;
-		        int input = Character.getNumericValue(lineInput.charAt(0));
+		        String input = key.nextLine();
+				input = input.trim();
+				int numinput = -1;
+				while (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")))
+				{
+					System.out.println("Invalid input. Type 1, 2, 3, or 4");
+					input = key.nextLine();
+					input = input.trim();
+				}
+				numinput = Character.getNumericValue(input.charAt(0));
 		        int result;
 
-		        switch(input) {
+		        switch(numinput) {
 		        case 1: 
 		            System.out.println("Starting TicTacToe... ");
 		            Tictactoe t = new Tictactoe();
