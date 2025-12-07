@@ -100,28 +100,26 @@ public class Tictactoe {
 				{ // should never reach this. it's if turn is still 1 or 2
 					throw new IllegalStateException();
 				}
-			Mark winner;
-			if (checkWinner() != Mark.EMPTY) // if checkwinner == markEmpty then the game is undecided thus far, or tie.
+			Mark winner = checkWinner();
+			if (winner != Mark.EMPTY) // if checkwinner == markEmpty then the game is undecided thus far, or tie.
 				{ // if checkwinner is not empty then there is a decided winner
-					winner = checkWinner(); // set winner
-			if (winner == player1)
-				{
-					displayBoard();
-					System.out.println("Winner is player 1!");
-					return 1; // end program. we found a winner
+				if (winner == player1)
+					{
+						displayBoard();
+						System.out.println("Winner is player 1!");
+						return 1; // end program. we found a winner
+					}
+				else if (winner == player2)
+					{
+						displayBoard();
+						System.out.println("Winner is player 2!");
+						return 2; // end program. we found a winner
+					}
 				}
-			else if (winner == player2)
-				{
-					displayBoard();
-					System.out.println("Winner is player 2!");
-					return 2; // end program. we found a winner
-				}
-			}
 			// if the code reaches this line then we did not find a winner yet
 			if (gameover()) // check if game is over
 			{ // if game is over, and we already said we did not find a winner, then it must be a tie
 				displayBoard();
-				System.out.println("Tie. Game over.");
 				return 0;
 			}
 			
@@ -165,12 +163,25 @@ public class Tictactoe {
 		boolean flag = true;
 		while (flag)
 		{
+			
 			System.out.println("Select which column to place in by typing 1, 2, or 3 (left to right): ");
-			input = key.nextLine();
-			int col = Character.getNumericValue(input.charAt(0));
+			input = key.nextLine().trim();
+			int col = -1;
+			while (!(input.equals("1") || input.equals("2") || input.equals("3")))
+			{
+				System.out.println("Invalid input. Type 1, 2, or 3");
+				input = key.nextLine().trim();
+			}
+			col = Character.getNumericValue(input.charAt(0));
 			System.out.println("Select which row to place in by typing 1, 2, or 3 (top to bottom): ");
-			input = key.nextLine();
-			int row = Character.getNumericValue(input.charAt(0));
+			input = key.nextLine().trim();
+			int row = -1;
+			while (!(input.equals("1") || input.equals("2") || input.equals("3")))
+			{
+				System.out.println("Invalid input. Type 1, 2, or 3");
+				input = key.nextLine().trim();
+			}
+			row = Character.getNumericValue(input.charAt(0));
 			if (this.board[row-1][col-1] == Mark.EMPTY)
 			{
 				this.board[row-1][col-1] = mark;
@@ -235,13 +246,6 @@ public class Tictactoe {
 		
 		
 		
-		if (gameover())
-		{
-			return Mark.EMPTY;
-		}
-		else
-		{
-			return null;
-		}
+		return Mark.EMPTY;
 	}
 }

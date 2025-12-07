@@ -12,23 +12,21 @@ public class ThreeTwoPlayerGames {
 		{
 		    key = new Scanner(System.in);
 		    boolean flag = true;
+		    System.out.println("Welcome to the Three Two Player Game software. ");
 		    while (flag)
 		    {
-		        System.out.println("Welcome to the Three Two Player Game software. ");
 		        System.out.println("Pick a game. ");
 		        System.out.println("1. TicTacToe");
 		        System.out.println("2. Hangman");
 		        System.out.println("3. Checkers");
 		        System.out.println("4. Quit");
 		        System.out.println("Current score: \nPlayer 1: " + overallPlayerOneWins + "\nPlayer 2: " +overallPlayerTwoWins);
-		        String input = key.nextLine();
-				input = input.trim();
+		        String input = key.nextLine().trim();
 				int numinput = -1;
 				while (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")))
 				{
 					System.out.println("Invalid input. Type 1, 2, 3, or 4");
-					input = key.nextLine();
-					input = input.trim();
+					input = key.nextLine().trim();
 				}
 				numinput = Character.getNumericValue(input.charAt(0));
 		        int result;
