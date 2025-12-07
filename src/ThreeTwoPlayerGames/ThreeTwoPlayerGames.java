@@ -20,6 +20,7 @@ public class ThreeTwoPlayerGames {
 		        System.out.println("2. Hangman");
 		        System.out.println("3. Checkers");
 		        System.out.println("4. Quit");
+		        System.out.println("Current score: \nPlayer 1: " + overallPlayerOneWins + "\nPlayer 2: " +overallPlayerTwoWins);
 		        String lineInput = key.nextLine();
 		        if (lineInput.isEmpty()) continue;
 		        int input = Character.getNumericValue(lineInput.charAt(0));
