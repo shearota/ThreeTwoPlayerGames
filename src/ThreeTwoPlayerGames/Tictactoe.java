@@ -199,35 +199,33 @@ public class Tictactoe {
 	
 	public Mark checkWinner()
 	{
+		// check diagonals
+		// top left to bottom right
+	    if (board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] != Mark.EMPTY)
+	    {
+	        return board[0][0];
+	    }
+	    
+	    // bottom left to top right
+	    if (board[0][2] == board[1][1] && board[1][1] == board[2][0] && board[0][2] != Mark.EMPTY)
+	    {
+	        return board[0][2];
+	    }
+		
 		for (int i = 0; i <= 2; i++)
 		{
-			if (board[i][0] == Mark.O && board[i][1] == Mark.O && board[i][2] == Mark.O)
-			{
-				return Mark.O;
-			}
-			else if (board[i][0] == Mark.X && board[i][1] == Mark.X && board[i][2] == Mark.X)
-			{
-				return Mark.X;
-			}
+			// Check rows
+	        if (board[i][0] == board[i][1] && board[i][1] == board[i][2] && board[i][0] != Mark.EMPTY)
+	        {
+	            return board[i][0];
+	        }
+	        // Check columns
+	        if (board[0][i] == board[1][i] && board[1][i] == board[2][i] && board[0][i] != Mark.EMPTY)
+	        {
+	            return board[0][i];
+	        }
 			
-			if (board[0][i] == Mark.O && board[1][i] == Mark.O && board[2][i] == Mark.O)
-			{
-				return Mark.O;
-			}
-			else if (board[0][i] == Mark.X && board[1][i] == Mark.X && board[2][i] == Mark.X)
-			{
-				return Mark.X;
-			}
 			
-			if (board[0][0] == Mark.X && board[1][1] == Mark.X && board[2][2] == Mark.X)
-			{
-				return Mark.X;
-			}
-			if (board[0][0] == Mark.O && board[1][1] == Mark.O && board[2][2] == Mark.O)
-			{
-				return Mark.O;
-			}
-			// check diagonals
 		}
 		
 		
