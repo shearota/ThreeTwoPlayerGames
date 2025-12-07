@@ -2,8 +2,7 @@
  * 
  */
 /**
- * @author tanne
- *
+ * 
  */
-module ThreeTwoPlayerGames {
+module threetwoplayergames {
 }

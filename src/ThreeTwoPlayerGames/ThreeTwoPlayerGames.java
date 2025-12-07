@@ -18,11 +18,20 @@ public class ThreeTwoPlayerGames {
 			System.out.println("2. Hangman");
 			System.out.println("3. Checkers");
 			System.out.println("4. Quit");
-			int input = Character.getNumericValue(key.nextLine().charAt(0));
-			switch(input) {
+			String input = key.nextLine();
+			input = input.trim();
+			int numinput = -1;
+			while (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")))
+			{
+				System.out.println("Invalid input. Type 1, 2, 3, or 4");
+				input = key.nextLine();
+				input = input.trim();
+			}
+			numinput = Character.getNumericValue(input.charAt(0));
+			switch(numinput) {
 			case 1: 
 				System.out.println("Starting TicTacToe... ");
-				Tictactoe t = new Tictactoe();
+				Tictactoe t = new Tictactoe(key);
 				t.startGame();
 				break;
 			case 2:
@@ -39,12 +48,9 @@ public class ThreeTwoPlayerGames {
 				System.out.println("Exiting... ");
 				flag = false;
 				break;
-			default:
-				System.out.println("Type 1, 2, 3, or 4");
-			}
-			
-				
+			}	
 		}
+		key.close();
 	}
 	
 }
