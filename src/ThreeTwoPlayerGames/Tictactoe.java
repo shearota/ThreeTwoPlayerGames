@@ -203,14 +203,17 @@ public class Tictactoe {
 	public boolean gameover()
 	{
 		boolean gameover = true;
-		for (int i = 0; i <= 2; i++)
+		for (int row = 0; row <= 2; row++)
 		{
-			if (board[i][0] == Mark.EMPTY || board[i][1] == Mark.EMPTY || board[i][2] == Mark.EMPTY)
+			for (int col = 0; col <= 2; col++)
 			{
-				gameover = false;
+				if (board[row][col] == Mark.EMPTY)
+				{
+					return false;
+				}
 			}
 		}
-		return gameover;
+		return true;
 	}
 	
 	public Mark checkWinner()
