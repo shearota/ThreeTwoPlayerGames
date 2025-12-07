@@ -22,13 +22,12 @@ public class ThreeTwoPlayerGames {
 		        System.out.println("4. Quit");
 		        System.out.println("Current score: \nPlayer 1: " + overallPlayerOneWins + "\nPlayer 2: " +overallPlayerTwoWins);
 		        String input = key.nextLine().trim();
-				int numinput = -1;
 				while (!(input.equals("1") || input.equals("2") || input.equals("3") || input.equals("4")))
 				{
 					System.out.println("Invalid input. Type 1, 2, 3, or 4");
 					input = key.nextLine().trim();
 				}
-				numinput = Character.getNumericValue(input.charAt(0));
+				int numinput = Character.getNumericValue(input.charAt(0));
 		        int result;
 
 		        switch(numinput) {
