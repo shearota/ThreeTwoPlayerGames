@@ -31,6 +31,11 @@ public class Tictactoe {
 		}
 	}
 	
+	public static void main(String[] args)
+	{
+		
+	}
+	
 	// Return value is equal to the number of who won
 	// 0 = tie
 	// 1 = player1 won
@@ -39,6 +44,7 @@ public class Tictactoe {
 	public int startGame()
 	{
 		System.out.println("Player 1, choose X's or O's by typing X or O");
+		key = new Scanner(System.in);
 		String input = key.nextLine();
 		char selection = input.toLowerCase().charAt(0);
 		while (selection != 'x' && selection != 'o')
@@ -84,21 +90,22 @@ public class Tictactoe {
 				{ // should never reach this. it's if turn is still 1 or 2
 					throw new IllegalStateException();
 				}
-			Mark winner = checkWinner();
-			if (winner != Mark.EMPTY) // if checkwinner == markEmpty then the game is undecided thus far, or tie.
+			Mark winner;
+			if (checkWinner() != Mark.EMPTY) // if checkwinner == markEmpty then the game is undecided thus far, or tie.
 				{ // if checkwinner is not empty then there is a decided winner
-				if (winner == player1)
-					{
-						displayBoard();
-						System.out.println("Winner is player 1!");
-						return 1; // end program. we found a winner
-					}
-				else if (winner == player2)
-					{
-						displayBoard();
-						System.out.println("Winner is player 2!");
-						return 2; // end program. we found a winner
-					}
+					winner = checkWinner(); // set winner
+			if (winner == player1)
+				{
+					displayBoard();
+					System.out.println("Winner is player 1!");
+					return 1; // end program. we found a winner
+				}
+			else if (winner == player2)
+				{
+					displayBoard();
+					System.out.println("Winner is player 2!");
+					return 2; // end program. we found a winner
+				}
 			}
 			// if the code reaches this line then we did not find a winner yet
 			if (gameover()) // check if game is over
@@ -113,12 +120,11 @@ public class Tictactoe {
 		return -1;
 	}
 	
-	public Tictactoe(Scanner k)
+	public Tictactoe()
 	{
 		board = new Mark[][] { {Mark.EMPTY, Mark.EMPTY, Mark.EMPTY}, 
 											{Mark.EMPTY, Mark.EMPTY, Mark.EMPTY}, 
 											{Mark.EMPTY, Mark.EMPTY, Mark.EMPTY} };
-        key = k;
 	}
 	
 	/**
@@ -156,26 +162,10 @@ public class Tictactoe {
 		{
 			System.out.println("Select which column to place in by typing 1, 2, or 3 (left to right): ");
 			input = key.nextLine();
-			input = input.trim();
-			int col = -1;
-			while (!(input.equals("1") || input.equals("2") || input.equals("3")))
-			{
-				System.out.println("Invalid input. Type 1, 2, or 3");
-				input = key.nextLine();
-				input = input.trim();
-			}
-			col = Character.getNumericValue(input.charAt(0));
+			int col = Character.getNumericValue(input.charAt(0));
 			System.out.println("Select which row to place in by typing 1, 2, or 3 (top to bottom): ");
 			input = key.nextLine();
-			input = input.trim();
-			int row = -1;
-			while (!(input.equals("1") || input.equals("2") || input.equals("3")))
-			{
-				System.out.println("Invalid input. Type 1, 2, or 3");
-				input = key.nextLine();
-				input = input.trim();
-			}
-			row = Character.getNumericValue(input.charAt(0));
+			int row = Character.getNumericValue(input.charAt(0));
 			if (this.board[row-1][col-1] == Mark.EMPTY)
 			{
 				this.board[row-1][col-1] = mark;
@@ -209,23 +199,6 @@ public class Tictactoe {
 	
 	public Mark checkWinner()
 	{
-		if (board[0][0] == Mark.X && board[1][1] == Mark.X && board[2][2] == Mark.X)
-		{
-			return Mark.X;
-		}
-		if (board[0][0] == Mark.O && board[1][1] == Mark.O && board[2][2] == Mark.O)
-		{
-			return Mark.O;
-		}
-		if (board[0][2] == Mark.X && board[1][1] == Mark.X && board[2][0] == Mark.X)
-		{
-			return Mark.X;
-		}
-		if (board[0][2] == Mark.O && board[1][1] == Mark.O && board[2][0] == Mark.O)
-		{
-			return Mark.O;
-		}
-		// check diagonals
 		for (int i = 0; i <= 2; i++)
 		{
 			if (board[i][0] == Mark.O && board[i][1] == Mark.O && board[i][2] == Mark.O)
@@ -246,7 +219,15 @@ public class Tictactoe {
 				return Mark.X;
 			}
 			
-			
+			if (board[0][0] == Mark.X && board[1][1] == Mark.X && board[2][2] == Mark.X)
+			{
+				return Mark.X;
+			}
+			if (board[0][0] == Mark.O && board[1][1] == Mark.O && board[2][2] == Mark.O)
+			{
+				return Mark.O;
+			}
+			// check diagonals
 		}
 		
 		
