@@ -58,6 +58,7 @@ public class ThreeTwoPlayerGames {
 		            System.out.println("Player 2 Wins: " + overallPlayerTwoWins);
 		            System.out.println("----------------------------");
 		            flag = false;
+		            key.close();
 		            break;
 		        }
 		            
