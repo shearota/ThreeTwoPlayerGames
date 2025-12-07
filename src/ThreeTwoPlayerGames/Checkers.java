@@ -9,13 +9,16 @@ public class Checkers {
     static char[][] board = new char[SIZE][SIZE];
     static int scoreX = 0;
     static int scoreO = 0;
-    static Scanner input = new Scanner(System.in);
+    static Scanner input;
 
 
+    public Checkers(Scanner k)
+    {
+    	input = k;
+    }
+    
     public int startGame()
     {
-        scoreX = 0;
-        scoreO = 0;
     	initializeBoard();
         printBoard();
 

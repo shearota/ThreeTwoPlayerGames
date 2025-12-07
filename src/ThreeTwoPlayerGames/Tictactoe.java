@@ -166,22 +166,20 @@ public class Tictactoe {
 			
 			System.out.println("Select which column to place in by typing 1, 2, or 3 (left to right): ");
 			input = key.nextLine().trim();
-			int col = -1;
 			while (!(input.equals("1") || input.equals("2") || input.equals("3")))
 			{
 				System.out.println("Invalid input. Type 1, 2, or 3");
 				input = key.nextLine().trim();
 			}
-			col = Character.getNumericValue(input.charAt(0));
+			int col = Character.getNumericValue(input.charAt(0));
 			System.out.println("Select which row to place in by typing 1, 2, or 3 (top to bottom): ");
 			input = key.nextLine().trim();
-			int row = -1;
 			while (!(input.equals("1") || input.equals("2") || input.equals("3")))
 			{
 				System.out.println("Invalid input. Type 1, 2, or 3");
 				input = key.nextLine().trim();
 			}
-			row = Character.getNumericValue(input.charAt(0));
+			int row = Character.getNumericValue(input.charAt(0));
 			if (this.board[row-1][col-1] == Mark.EMPTY)
 			{
 				this.board[row-1][col-1] = mark;

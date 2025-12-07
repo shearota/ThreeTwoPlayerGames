@@ -44,7 +44,7 @@ public class ThreeTwoPlayerGames {
 		            break;
 		        case 3:
 		            System.out.println("Starting Checkers...");
-		            Checkers c = new Checkers();
+		            Checkers c = new Checkers(key);
 		            result = c.startGame(); 
 		            updateScores(result); 
 		            break;
