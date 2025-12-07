@@ -48,14 +48,21 @@ public class Tictactoe {
 	public int startGame()
 	{
 		System.out.println("Player 1, choose X's or O's by typing X or O");
-		String input = key.nextLine();
-		char selection = input.toLowerCase().charAt(0);
-		while (selection != 'x' && selection != 'o')
-		{ // make sure selection is an x or an o
-			input = key.nextLine();
-			selection = input.toLowerCase().charAt(0);
-			System.out.println("Please type X or O. You typed: " + selection);
+		String input = key.nextLine().trim();
+		char selection = 'e';
+		while (input.isEmpty() || (input.toLowerCase().charAt(0) != 'x' && input.toLowerCase().charAt(0) != 'o'))
+		{
+			if (input.isEmpty())
+			{
+				System.out.println("Selection cannot be empty. ");
+			}
+			else
+			{
+				System.out.println("Please type x or o. You typed: " + input);
+			}
+			input = key.nextLine().trim();
 		}
+		selection = input.toLowerCase().charAt(0);
 		Mark player1, player2; // initialize player1, 2
 		if (selection == 'x')
 		{ // if player 1 is x, then player 2 is o
