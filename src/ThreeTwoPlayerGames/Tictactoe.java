@@ -11,6 +11,14 @@ public class Tictactoe {
 		X, O, EMPTY
 	}
 	
+	public Tictactoe(Scanner k)
+	{
+		board = new Mark[][] { {Mark.EMPTY, Mark.EMPTY, Mark.EMPTY}, 
+											{Mark.EMPTY, Mark.EMPTY, Mark.EMPTY}, 
+											{Mark.EMPTY, Mark.EMPTY, Mark.EMPTY} };
+		key = k;			
+	}
+	
 	public String toString(Mark mark)
 	{
 		if (mark.equals(Mark.X))
@@ -31,10 +39,6 @@ public class Tictactoe {
 		}
 	}
 	
-	public static void main(String[] args)
-	{
-		
-	}
 	
 	// Return value is equal to the number of who won
 	// 0 = tie
@@ -44,7 +48,6 @@ public class Tictactoe {
 	public int startGame()
 	{
 		System.out.println("Player 1, choose X's or O's by typing X or O");
-		key = new Scanner(System.in);
 		String input = key.nextLine();
 		char selection = input.toLowerCase().charAt(0);
 		while (selection != 'x' && selection != 'o')
@@ -120,12 +123,7 @@ public class Tictactoe {
 		return -1;
 	}
 	
-	public Tictactoe()
-	{
-		board = new Mark[][] { {Mark.EMPTY, Mark.EMPTY, Mark.EMPTY}, 
-											{Mark.EMPTY, Mark.EMPTY, Mark.EMPTY}, 
-											{Mark.EMPTY, Mark.EMPTY, Mark.EMPTY} };
-	}
+	
 	
 	/**
 	 * to do: print 1 2 3 to the left of the rows

@@ -36,7 +36,7 @@ public class ThreeTwoPlayerGames {
 		        switch(numinput) {
 		        case 1: 
 		            System.out.println("Starting TicTacToe... ");
-		            Tictactoe t = new Tictactoe();
+		            Tictactoe t = new Tictactoe(key);
 		            result = t.startGame();
 		            updateScores(result); 
 		            break;
