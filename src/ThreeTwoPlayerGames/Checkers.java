@@ -49,30 +49,34 @@ public class TwoPlayerCheckers {
                 {
 
                     char piece = board[row][col];
-                    makeMove(piece, row, col, newRow, newCol);
+                    boolean promoted = makeMove(piece, row, col, newRow, newCol);
                     printBoard();
                     moved = true;
 
                     // handling for multi-jump
-                    while(canContinueCapture(board[newRow][newCol], newRow, newCol)) 
+                    if(!promoted) 
                     {
-
-                        System.out.println("You must continue capturing with the SAME piece at (" + newRow + "," + newCol + ")");
-                        System.out.print("Enter next jump (newRow newCol): ");
-
-                        int r = safeInt();
-                        int c = safeInt();
-
-                        if(isValidCaptureMove(board[newRow][newCol], newRow, newCol, r, c)) 
+                        while(canContinueCapture(board[newRow][newCol], newRow, newCol)) 
                         {
-                            makeMove(board[newRow][newCol], newRow, newCol, r, c);
-                            newRow = r;
-                            newCol = c;
-                            printBoard();
-                        } 
-                        else 
-                        {
-                            System.out.println("Invalid capture! You MUST continue jumping.");
+
+                            System.out.println("You must continue capturing with the SAME piece at (" + newRow + "," + newCol + ")");
+                            System.out.print("Enter next jump (newRow newCol): ");
+
+                            int r = safeInt();
+                            int c = safeInt();
+
+                            if(isValidCaptureMove(board[newRow][newCol], newRow, newCol, r, c)) 
+                            {
+                                boolean prom = makeMove(board[newRow][newCol], newRow, newCol, r, c);
+                                newRow = r;
+                                newCol = c;
+                                printBoard();
+                                if(prom) break;
+                            } 
+                            else 
+                            {
+                                System.out.println("Invalid capture! You MUST continue jumping with the same piece.");
+                            }
                         }
                     }
 
@@ -135,7 +139,7 @@ public class TwoPlayerCheckers {
     static void printBoard() 
     {
         System.out.println("\n  0 1 2 3 4 5 6 7");
-        for(int i = 0; i < SIZE; i++)
+        for(int i = 0; i < SIZE; i++) 
         {
             System.out.print(i + " ");
             for(int j = 0; j < SIZE; j++)
@@ -150,13 +154,15 @@ public class TwoPlayerCheckers {
         return p == 'K' || p == 'Q';
     }
 
+    // returns 'X', 'O', or '.' for empty
     static char ownerOf(char piece) 
     {
         if(piece == 'X' || piece == 'K') return 'X';
-        return 'O';
+        if(piece == 'O' || piece == 'Q') return 'O';
+        return '.';
     }
 
-    // move validation
+    // move violation
     static boolean isValidMove(char player, int row, int col, int newRow, int newCol) 
     {
 
@@ -175,19 +181,22 @@ public class TwoPlayerCheckers {
         int rowDiff = newRow - row;
         int colDiff = Math.abs(newCol - col);
 
-        boolean forward = (rowDiff == dir);
-        boolean backward = (rowDiff == -dir);
-
         boolean validStep =
                 (king && Math.abs(rowDiff) == 1) ||
-                        (!king && forward && Math.abs(rowDiff) == 1);
+                        (!king && rowDiff == dir && colDiff == 1);
 
-        boolean validCapture =
-                (king && Math.abs(rowDiff) == 2) ||
-                        (!king && Math.abs(rowDiff) == 2);
+        boolean validCapture;
+        if(king) 
+        {
+            validCapture = Math.abs(rowDiff) == 2 && colDiff == 2;
+        } 
+        else 
+        {
+            validCapture = (rowDiff == 2 * dir) && colDiff == 2;
+        }
 
         // capture logic
-        if(validCapture && colDiff == 2) 
+        if(validCapture) 
         {
             int midRow = (row + newRow) / 2;
             int midCol = (col + newCol) / 2;
@@ -198,15 +207,15 @@ public class TwoPlayerCheckers {
                 return true;
         }
 
-        // normal move if no captures exist
-        if(!hasCapture(player) && validStep && colDiff == 1)
+        // normal move if no captures exist for player
+        if(!hasCapture(player) && validStep)
             return true;
 
         return false;
     }
 
     // move execution (kinging)
-    static void makeMove(char piece, int row, int col, int newRow, int newCol) 
+    static boolean makeMove(char piece, int row, int col, int newRow, int newCol) 
     {
 
         int rowDiff = newRow - row;
@@ -214,7 +223,9 @@ public class TwoPlayerCheckers {
         board[newRow][newCol] = piece;
         board[row][col] = '.';
 
-        // captures
+        boolean promoted = false;
+
+        // capture
         if(Math.abs(rowDiff) == 2) 
         {
             int midRow = (row + newRow) / 2;
@@ -222,20 +233,27 @@ public class TwoPlayerCheckers {
 
             char captured = board[midRow][midCol];
             if(captured == 'X' || captured == 'K') scoreO++;
-            else scoreX++;
+            else if(captured == 'O' || captured == 'Q') scoreX++;
 
             board[midRow][midCol] = '.';
         }
 
         // king promotion
-        if(newRow == 0 && ownerOf(piece) == 'X')
+        if(newRow == 0 && ownerOf(piece) == 'X') 
+        {
             board[newRow][newCol] = 'K';
-
-        if(newRow == SIZE - 1 && ownerOf(piece) == 'O')
+            promoted = true;
+        } 
+        else if(newRow == SIZE - 1 && ownerOf(piece) == 'O') 
+        {
             board[newRow][newCol] = 'Q';
+            promoted = true;
+        }
+
+        return promoted;
     }
 
-    // checking captures
+    // checking capture
     static boolean hasCapture(char player) 
     {
 
@@ -245,7 +263,8 @@ public class TwoPlayerCheckers {
             {
 
                 char piece = board[r][c];
-                if(ownerOf(piece) != player) continue;
+                if(ownerOf(piece) != player)
+                	continue;
 
                 if(canContinueCapture(piece, r, c))
                     return true;
@@ -297,19 +316,24 @@ public class TwoPlayerCheckers {
                 && Math.abs(newCol - col) == 2;
     }
 
-    // move checker
+    // move checkers
     static boolean hasAnyMove(char player) 
     {
         for(int r = 0; r < SIZE; r++)
-            for(int c = 0; c < SIZE; c++)
-                if(ownerOf(board[r][c]) == player)
-                    if(canMoveOrCapture(board[r][c], r, c))
+            for(int c = 0; c < SIZE; c++) 
+            {
+                char piece = board[r][c];
+                if(ownerOf(piece) == player)
+                    if(canMoveOrCapture(piece, r, c))
                         return true;
+            }
         return false;
     }
 
     static boolean canMoveOrCapture(char piece, int row, int col) 
     {
+        if(piece == '.') return false;
+
         char player = ownerOf(piece);
         boolean king = isKing(piece);
 
@@ -319,7 +343,8 @@ public class TwoPlayerCheckers {
         for(int d : dirs) 
         {
             int[][] moves = {{d, 1}, {d, -1}};
-            for(int[] m : moves) {
+            for(int[] m : moves) 
+            {
                 int newRow = row + m[0];
                 int newCol = col + m[1];
                 if(newRow >= 0 && newRow < SIZE && newCol >= 0 && newCol < SIZE &&
@@ -344,4 +369,3 @@ public class TwoPlayerCheckers {
         return count;
     }
 }
-
