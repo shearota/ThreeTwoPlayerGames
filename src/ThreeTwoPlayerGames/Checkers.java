@@ -1,8 +1,8 @@
-package CheckersGame;
+package ThreeTwoPlayerGames;
 
 import java.util.*;
 
-public class TwoPlayerCheckers {
+public class Checkers {
 
     static final int SIZE = 8;
     static char[][] board = new char[SIZE][SIZE];
@@ -12,7 +12,10 @@ public class TwoPlayerCheckers {
 
     public static void main(String[] args) 
     {
-
+startGame();
+    }
+    public static void startGame() {
+    
         initializeBoard();
         printBoard();
 
