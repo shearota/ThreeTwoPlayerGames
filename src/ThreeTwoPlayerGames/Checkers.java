@@ -8,13 +8,14 @@ public class Checkers {
     static char[][] board = new char[SIZE][SIZE];
     static int scoreX = 0;
     static int scoreO = 0;
-    static Scanner input = new Scanner(System.in);
+    
+    private Scanner input; 
 
-    public static void main(String[] args) 
-    {
-startGame();
+    public Checkers(Scanner key) {
+        this.input = key;
     }
-    public static void startGame() {
+
+    public int startGame() { 
     
         initializeBoard();
         printBoard();
@@ -102,10 +103,20 @@ startGame();
         System.out.println("Final Score:");
         System.out.println("Player X: " + scoreX);
         System.out.println("Player O: " + scoreO);
+        
+        // Return result for ThreeTwoPlayerGames.updateScores()
+        if (scoreX > scoreO) {
+            return 1; // Player 1 (X) wins
+        } else if (scoreO > scoreX) {
+            return 2; // Player 2 (O) wins
+        } else {
+            return 0; // Tie
+        }
     }
 
     // SAFE INTEGER INPUT (fix nextInt crash)
-    static int safeInt() 
+    // Changed from static to instance method
+    int safeInt() 
     {
         while(true) 
         {
